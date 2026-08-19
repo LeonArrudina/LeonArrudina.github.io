@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+<title>Custom title goes here</title>
+
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+ 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Le site de Léon Arrudina</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">Optim</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../about.md" class="nav-link">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#properdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#optimisation-dans-lincertain" class="nav-link">Optimisation dans l'incertain</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#mocassins-versus-running" class="nav-link">Mocassins versus running</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#variable-aleatoire" class="nav-link">Variable aléatoire</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="optimisation-dans-lincertain">Optimisation dans l'incertain</h1>
+<p>Vous est-il arrivé de devoir prendre une <strong>décision dans l'incertain</strong>, par exemple:</p>
+<ul>
+<li>quelle route choisir pour rentrer de vacances - sachant que le
+trafic va s'intensifier sur les trois routes possibles mais sans savoir quand et    avec quelle intensité,</li>
+<li>quel plat choisir sur la carte du restaurant - sachant que le poisson c'est excellent mais ça peut être imangeable si c'est trop cuit alors que le steak haché, c'est moins bon mais on est rarement déçu par la cuisson,</li>
+<li>quelles chaussures mettre ce soir - sachant que les mocassins sont plus jolis mais si je marche longtemps, je vais avoir des ampoules.</li>
+</ul>
+<p>Ces situationsi sont caractérisé par le fait:</p>
+<ul>
+<li>que vous <strong>devez</strong> prendre une décision</li>
+<li>sans savoir <em>a priori</em> quelle sera la meilleure</li>
+</ul>
+<p>et vous ne savez pas quelle est la meilleure tout bonnement car vos capacités de prédiction de l'avenir sont limitées.</p>
+<p>Développons l'exemple du choix de chaussures.</p>
+<h2 id="mocassins-versus-running">Mocassins versus running</h2>
+<p>Implicitement, on a deux critères en tête:</p>
+<ol>
+<li>le poids du regard de l'assistance, les mocassins : classe!, les running : pas classe!</li>
+<li>la douleur à la fin de la soirée.</li>
+</ol>
+<p>La première approche consiste à partir dans une boucle infinie:</p>
+<ul>
+<li>Allez, c'est décidé je choisi les mocassins! Trop la classe.</li>
+<li>Mais quand même, si on marche beaucoup, je vais mourrir des pieds. Plutôt les running.</li>
+<li>Mouais, mais c'est moins classe. Du coup, non, je reste sur les mocassins.</li>
+<li>Oui, mais non, je vais me bousiller les pieds si on marche trop : les runnings.</li>
+<li>Non, c'est la honte quand même. Les mocassins.</li>
+<li>Ouais, mais j'ai un 20km ce week-end. On va assurer avec les runnning.</li>
+<li>Aller à à la première réplique.</li>
+</ul>
+<p>On a <strong>deux</strong> difficultés dans cette situation. </p>
+<ol>
+<li>La première est que J doit arbitrer entre
+deux critères de natures différentes : classitude et douleur.</li>
+<li>La deuxième est qu'on ne sait pas si on va vraiement marcher, on a une <strong>incertitude</strong> sur ce fait.</li>
+</ol>
+<p>Commençons par le commencement.
+Pour pouvoir choisir, il faut interclasser <strong>toutes les configurations possibles</strong>.
+Il faut pour cela mettre sur une même échelle a) le regard de l'assistance
+et ...  b) la douleur aux pieds.
+Comme aujourd'hui tout s'achète, passons tout en €.</p>
+<p>Je suis près à payer 5€ un sorcier pouvant jeter
+un sort à l'assistance qui leur ferait croire que mes running sont de jolis mocassins.</p>
+<table>
+<thead>
+<tr>
+<th>Mocassins</th>
+<th>Runnings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0€</td>
+<td>5€</td>
+</tr>
+</tbody>
+</table>
+<p>Par expérience, je sais que ma douleur au pied varie linéairement en running et quadratiquement
+en mocassins en fonction du nombre de mètres parcourus.</p>
+<table>
+<thead>
+<tr>
+<th>Nombre de mètres parcourus</th>
+<th>Mocassins</th>
+<th>Runnings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>0€</td>
+<td>0€</td>
+</tr>
+<tr>
+<td>200</td>
+<td>1€</td>
+<td>1€</td>
+</tr>
+<tr>
+<td>300</td>
+<td>4€</td>
+<td>2€</td>
+</tr>
+<tr>
+<td>400</td>
+<td>9€</td>
+<td>3€</td>
+</tr>
+<tr>
+<td>500</td>
+<td>16€</td>
+<td>4€</td>
+</tr>
+</tbody>
+</table>
+<p><em>Douleur au pied selon le nombre de mètres parcourus, exprimée en €.</em></p>
+<p>Voilà notre problème de décision presque résolu, il suffit de faire le total:</p>
+<table>
+<thead>
+<tr>
+<th>Nombre de mètres parcourus</th>
+<th>Mocassins</th>
+<th>Runnings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>0€+0€ = 0€</td>
+<td>0€+5€=5€</td>
+</tr>
+<tr>
+<td>200</td>
+<td>1€+0€ = 1€</td>
+<td>1€+5€=6€</td>
+</tr>
+<tr>
+<td>300</td>
+<td>4€+0€ = 4€</td>
+<td>2€+5€=7€</td>
+</tr>
+<tr>
+<td>400</td>
+<td>9€+0€ = 9€</td>
+<td>3€+5€=8€</td>
+</tr>
+<tr>
+<td>500</td>
+<td>16€+0€ = 16€</td>
+<td>4€+5€=9€</td>
+</tr>
+</tbody>
+</table>
+<p><em>Coût total ressenti douleur et chiquitude selon le nombre de mètres parcourus, exprimé en €.</em></p>
+<p>Donc, si je parcours moins de 300m, il vaut mieux que je chausse des mocassins.
+A partir de 400m, le compromis douleur/ridicule bascule et je pars en runnning.
+C'était facile !!</p>
+<p>Ah oui, mais j'ai failli oublier la deuxième difficulté: je ne sais pas quelle distance on va marcher.
+Le nombre de mètres parcourus est <strong>incertain</strong> ou <strong>inconnu</strong>.</p>
+<h2 id="variable-aleatoire">Variable aléatoire</h2>
+<p>Supposons maintenant que je sache dire avec quelle probabilité je vais parcourir telle ou telle distance.
+Je suis déjà allé 100 fois en soirée chez E et j'ai noté:</p>
+<table>
+<thead>
+<tr>
+<th>Nombre de mètres parcourus</th>
+<th>Occurences</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>40</td>
+</tr>
+<tr>
+<td>200</td>
+<td>32</td>
+</tr>
+<tr>
+<td>300</td>
+<td>20</td>
+</tr>
+<tr>
+<td>400</td>
+<td>7</td>
+</tr>
+<tr>
+<td>500</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>Je pense donc que ce soir, je vais parcourir 100m avec une probabilité 40/100, je vais parcourir 200m avec une prbabilité 32/100, ... et 500m avec seulement une probabilité 1/100. Suis-je plus avancé ?
+Je ne connais pas toujours le nombre de mètres que je marcherai ce soir.
+Maintenant, si je sais que j'ai encore 100 autres soirées devant moi, je peux me poser la question de la
+meilleure décision sur le long-terme.
+Si je mets des mocassins, cela me coutera en moyenne:
+$$
+40 \times 0€ + 32 \times 1€ + 20 \times 4€ + 7 \times 9€ + 1 \times 16€
+$$
+tandis qu'en running:
+$$
+40 \times 5€ + 32 \times 6€ + 20 \times 7€ + 7 \times 8€ + 1 \times 9€
+$$</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+New footer with latex $$L=\sqrt{2}$$ !!
+<script type="math/tex">E = mc^2</script>
+
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="properdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="properdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="properdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="properdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
