@@ -1,1 +1,14 @@
-site_name: My Docs
+site_name: Le site de Léon Arrudina
+site_dir: "../build/site"
+nav:
+  - Home: index.md
+  - Optim: optim_incertain.md
+  - Stats: bayesien_frequentiste.md
+  - About: about.md
+
+
+theme:
+  name: mkdocs
+  custom_dir: custom_theme/
+
+markdown_extensions: []
